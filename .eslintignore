@@ -1,0 +1,3 @@
+# 打包后的文件、第三方库的代码不被eslint检查格式
+/dist
+/src/vender
