@@ -48,7 +48,7 @@ export default {
       inventory: false,
       onlyDiscount: false,
       sortField: null,
-      sortMethod: 'desc'
+      sortMethod: null
     })
     // 改变排序
     const changeSort = (sortField) => {

@@ -11,11 +11,11 @@
       <SubSort @sortChange="sortChange"/>
       <!-- 商品列表 -->
       <ul>
-        <li v-for="i in 20" :key="i" >
-          <GoodsItem :goods="{}" />
+        <li v-for="item in goods" :key="item.id" >
+          <GoodsItem :goods="item" />
         </li>
       </ul>
-      <XtxInfiniteLoading :loading="loading" :finished="finished" @infinite="goodsList"/>
+      <XtxInfiniteLoading :loading="loading" :finished="finished" @infinite="getGoodsList"/>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ import SubFilter from './components/sub-filter.vue'
 import SubSort from './components/sub-sort.vue'
 import { ref, reactive, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { goodsList } from '@/api/category'
+import { goodsList2 } from '@/api/category'
 import GoodsItem from './components/goods-item.vue'
 
 export default {
@@ -40,23 +40,30 @@ export default {
   setup () {
     // const isAllChecked = ref(false)
     const route = useRoute()
+    // 定义是否加载中
     const loading = ref(false)
+    // 定义是否加载完毕
     const finished = ref(false)
+    // 定义数据
     const goods = ref([])
     let postData = reactive({
       page: 1,
       pageSize: 20
     })
-    goodsList(postData).then(res => {
+    const getGoodsList = (postData) => {
       loading.value = true
-      if (res.result.items.length) {
-        goods.value.push(...res.result.items)
-        postData.page += 1
-      } else {
-        finished.value = true
-      }
-      loading.value = false
-    })
+      goodsList2(postData).then(res => {
+        if (res.result.items.length) {
+          goods.value.push(...res.result.items)
+          postData.page += 1
+          // 如果有数据
+          loading.value = false
+        } else {
+          finished.value = true
+        }
+      })
+    }
+    getGoodsList()
 
     // 切换二级分类重新加载
     watch(() => route.params.id, (newVal) => {
@@ -66,7 +73,7 @@ export default {
           page: 1,
           pageSize: 20
         }
-        finished.value = false
+        getGoodsList(postData)
       }
     })
 
@@ -74,11 +81,10 @@ export default {
     const sortChange = (val) => {
       postData = { ...postData, ...val }
       postData.page = 1
-      goodsList.value = []
+      goods.value = []
       finished.value = false
     }
-
-    return { loading, finished, goods, goodsList, sortChange }
+    return { loading, finished, goods, sortChange, getGoodsList }
   }
 }
 </script>

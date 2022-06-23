@@ -1,5 +1,5 @@
 // 引入API函数
-import request from '@/utils/request'
+import { request } from '@/utils/request'
 /*
 * @params {Integer} limit - 品牌个数
 * @return Promise

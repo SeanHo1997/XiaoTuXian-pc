@@ -27,14 +27,14 @@ export default {
       default: false
     }
   },
-  setup (props, { emit }) {
+  setup (props, context) {
     const container = ref(null)
     useIntersectionObserver(
       container,
       ([{ isIntersecting }], dom) => {
         if (isIntersecting) {
           if (props.loading === false && props.finished === false) {
-            emit('infinite')
+            context.emit('infinite')
           }
         }
       },
@@ -57,7 +57,7 @@ export default {
     .img {
       width: 50px;
       height: 50px;
-      background: url('@/assets/images/loading.gif') no-repeat center / contain;
+      // background: url('@/assets/images/loading.gif') no-repeat center / contain;
     }
     .text {
       color: #999;
@@ -72,7 +72,7 @@ export default {
     .img {
       width: 200px;
       height: 134px;
-      background: url('@/assets/images/none.jpeg') no-repeat center / contain;
+      // background: url('@/assets/images/none.jpeg') no-repeat center / contain;
     }
     .text {
       color: #999;

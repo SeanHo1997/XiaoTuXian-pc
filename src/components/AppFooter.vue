@@ -47,16 +47,16 @@
         </div>
         <!-- 版权信息 -->
         <div class="copyright">
-          <p>
-            <a href="javascript:;">关于我们</a>
-            <a href="javascript:;">帮助中心</a>
-            <a href="javascript:;">售后服务</a>
-            <a href="javascript:;">配送与验收</a>
-            <a href="javascript:;">商务合作</a>
-            <a href="javascript:;">搜索推荐</a>
-            <a href="javascript:;">友情链接</a>
-          </p>
-          <p>CopyRight © 小兔鲜儿</p>
+          <ul>
+            <li><a href="javascript:;">关于我们</a></li>
+            <li><a href="javascript:;">帮助中心</a></li>
+            <li><a href="javascript:;">售后服务</a></li>
+            <li><a href="javascript:;">配送与验收</a></li>
+            <li><a href="javascript:;">商务合作</a></li>
+            <li><a href="javascript:;">搜索推荐</a></li>
+            <li><a href="javascript:;">友情链接</a></li>
+          </ul>
+          <p>CopyRight © 剪发5元</p>
         </div>
       </div>
     </div>
@@ -191,19 +191,24 @@ export default {
     text-align: center;
     color: #999;
     font-size: 15px;
-    p {
-      line-height: 1;
+    ul {
       margin-bottom: 20px;
-    }
-    a {
-      color: #999;
-      line-height: 1;
-      padding: 0 10px;
-      border-right: 1px solid #999;
-      &:last-child {
-        border-right: none;
+      li {
+        display: inline-block;
+        a {
+          color: #999;
+          padding: 0 10px;
+          border-right: 1px solid #999;
+          &:last-child {
+            border-right: none;
+          }
+          &:hover {
+            color: #fff;
+          }
+        }
       }
     }
+
   }
 }
 </style>

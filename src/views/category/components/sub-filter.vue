@@ -7,7 +7,7 @@
           v-for="item in filterData.brands"
           :key="item.id"
           :class="{active: filterData.selectedId === item.id}"
-          @click="filterData.selectedId = item.id"
+          @click="changeBrand"
           >{{ item.name }}</a>
        </div>
      </div>
@@ -29,7 +29,7 @@
           v-for="subItem in item.properties"
           :key="subItem.id"
           :class="{active: filterData.selectedId === subItem.id}"
-          @click="filterData.selectedId = subItem.id"
+          @click="changeProp(subItem, subItem.id)"
           >{{ subItem.name }}</a>
        </div>
      </div>
@@ -44,8 +44,9 @@
 </template>
 
 <script>
-import { findSubCategoryFilter } from '@/api/category'
-import { ref, watch } from 'vue'
+// import { findSubCategoryFilter } from '@/api/category'
+import { goodsList2 } from '@/api/category'
+import { ref, watch, emit } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default {
@@ -58,7 +59,7 @@ export default {
     // 监听二级类目路由变化
     watch(() => route.params.id, (newVal) => {
       isLoading = true
-      findSubCategoryFilter(route.params.id).then(res => {
+      goodsList2(route.params.id).then(res => {
         res.result.brands.unshift({ id: null, name: '全部' })
         res.result.categories.unshift({ id: null, name: '全部' })
         res.result.saleProperties.forEach(item => {
@@ -68,8 +69,49 @@ export default {
         filterData.value.selectedId = null
         isLoading = false
       })
-    })
-    return { filterData, isLoading }
+    }, { immediate: true })
+
+    // 获取筛选参数的函数
+    const getFilterParams = () => {
+      const obj = { brandId: null, attrs: [] }
+      // 品牌
+      obj.brandId = filterData.value.selectedBrand
+      // 销售属性
+      filterData.value.saleProperties.forEach(item => {
+        if (item.selectedProp) {
+          const prop = item.properties.find(prop => prop.id === item.selectedProp)
+          obj.attrs.push({ groupName: item.name, propertyName: prop.name })
+        }
+      })
+      if (obj.attrs.length === 0) obj.attrs = null
+      return obj
+    }
+
+    const changeBrand = brandId => {
+      if (filterData.value.selectedBrand === brandId) {
+        return
+      }
+      filterData.value.selectedId = brandId
+      emit('filter-change', getFilterParams())
+    }
+    const changeProp = (item, propId) => {
+      if (item.selectedProp === propId) {
+        return
+      }
+      filterData.value.selectedId = propId
+      emit('filter-change', getFilterParams())
+    }
+
+    // // 2更改筛选组件的筛选数据.重新请求
+    // const filterChange = (filterParams) => {
+    //   // console.log('filter')
+    //   finished.value = false
+    //   reqParams = { ...reqParams, ...filterParams }
+    //   reqParams.page = 1
+    //   goodsList.value = []
+    // }
+
+    return { filterData, isLoading, changeBrand, changeProp, getFilterParams }
   }
 }
 </script>

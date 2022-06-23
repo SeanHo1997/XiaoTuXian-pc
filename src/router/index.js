@@ -9,8 +9,13 @@ const routes = [
     children: [
       { path: '', name: 'home', component: () => import('@/views/home/index.vue') },
       { path: '/category/:id', component: () => import('@/views/category/TopCategory.vue') },
-      { path: '/category/sub/:id', component: () => import('@/views/category/SubCategory.vue') }
+      { path: '/category/sub/:id', component: () => import('@/views/category/SubCategory.vue') },
+      { path: '/product/:id', component: () => import('@/views/goods/index') }
     ]
+  },
+
+  {
+    path: '/login', component: () => import('@/views/login/index')
   }
 ]
 

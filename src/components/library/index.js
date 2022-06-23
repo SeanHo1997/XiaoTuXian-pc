@@ -9,6 +9,7 @@
 // import XtxBreadItem from './xtx-bread-item.vue'
 
 import defaultImg from '@/assets/images/logo.png'
+import Message from './Message'
 
 // 批量注册组件 require.context(dir, deep, matching)
 // 参数1: 目录 参数2: 布尔值(是否加载子目录) 参数3: 加载的正则匹配
@@ -52,5 +53,8 @@ export default {
       app.component(component.name, component)
     })
     defineDirectives(app)
+
+    // 如果你想挂载全局的属性，能够通过组件实例调用的属性   this.$message
+    app.config.globalProperties.$message = Message// 原型函数
   }
 }
